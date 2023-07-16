@@ -1,14 +1,13 @@
 import Balance from 'components/Balance';
+import getUser from 'hook/getUser';
 
-export default function HomeScreen() {
-  const data = {
-    name: 'Fulano de tal',
-    phone: 99999999999,
-    balance: 0
-  };
+export default async function HomeScreen() {
+  const { data, error } = await getUser();
+  if (error) throw Error(error);
+
   return (
-    <div className="grid grid-cols-3">
-      <Balance info={data} />
+    <div className="flex flex-col md:grid grid-cols-3">
+      <Balance info={data.user} />
     </div>
   );
 }
