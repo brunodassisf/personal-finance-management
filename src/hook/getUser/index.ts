@@ -1,7 +1,6 @@
 export default async function getUser() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user`, {
-    method: 'GET',
-    cache: 'no-cache'
+    method: 'GET'
   });
 
   const data = await response.json();
