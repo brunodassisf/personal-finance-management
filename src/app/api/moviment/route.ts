@@ -33,6 +33,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ msg: `${format.label}, cadastrado com sucesso` });
   } catch (error) {
-    return NextResponse.json({ error: true, msg: 'Ocorreu um erro, tente novamente mais tarde.' });
+    return NextResponse.json({
+      error: true,
+      msg: 'Ocorreu um erro, tente novamente mais tarde.',
+      errorText: JSON.stringify(error)
+    });
   }
 }
