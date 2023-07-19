@@ -1,12 +1,14 @@
-export const formatCurrency = (money: number) => {
-  if (money !== 0) {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(money);
-  } else {
-    return 'R$ 0,00';
-  }
+import VMasker from 'vanilla-masker';
+
+const optionMoney = {
+  precision: 2,
+  separator: ',',
+  delimiter: '.',
+  unit: 'R$'
+};
+
+export const convertCurrency = (value: string | number) => {
+  return VMasker.toMoney(value, optionMoney);
 };
 
 export const formatPhone = (phone: number) => {
