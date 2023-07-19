@@ -25,10 +25,11 @@
     "react-hooks",
     "eslint-plugin-import-helpers",
     "eslint-plugin-prettier",
-    "testing-library"
+    "eslint-plugin-testing-library"
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": 0,
+    "@typescript-eslint/no-explicit-any": 0,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/react-in-jsx-scope": "off",
@@ -39,7 +40,8 @@
         "groups": [
           ["/^react/", "/^next/", "/@next/"],
           "/^components/",
-          "/^@shared/",
+          "/^util/",
+          "/^~/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }
