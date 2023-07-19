@@ -1,5 +1,4 @@
 'use client';
-
 import { FaCoins } from 'react-icons/fa';
 
 function Header() {
