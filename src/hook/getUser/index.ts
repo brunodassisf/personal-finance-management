@@ -1,9 +1,10 @@
-export default async function getUser() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user`, {
-    method: 'GET'
-  });
+import useSWR from 'swr';
+import { IUser } from 'util/interface';
 
-  const data = await response.json();
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-  return { data, error: !response.ok && 'Ocorreu um erro, tente novamente mais tarde.' };
+export default function useGetUser() {
+  const { data, error, isLoading, mutate } = useSWR<IUser>(`/api/user`, fetcher);
+
+  return { data, error, isLoading, mutate };
 }
