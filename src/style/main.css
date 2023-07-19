@@ -18,3 +18,68 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.swiper-pagination-progressbar-fill {
+  @apply !bg-emerald-600;
+}
+
+.card {
+  @apply bg-white shadow-md rounded flex;
+}
+
+.custom_select {
+  @apply w-full;
+}
+
+.custom_select .selectCustom__control {
+  @apply min-w-[250px] border-2 border-gray-400 shadow-transparent;
+}
+
+.selectCustom__menu {
+  @apply !z-10;
+}
+
+.custom_select .selectCustom__control--is-focused {
+  @apply border-emerald-500;
+}
+
+.custom_select .selectCustom__control:hover {
+  @apply border-emerald-600;
+}
+
+.error .selectCustom__control {
+  @apply !border-red-400;
+}
+
+.error .selectCustom__placeholder {
+  @apply !text-red-400;
+}
+
+.error .selectCustom__control--is-focused {
+  @apply !border-red-500;
+}
+
+.error .selectCustom__control:hover {
+  @apply !border-red-600;
+}
