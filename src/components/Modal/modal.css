@@ -1,0 +1,11 @@
+.overlay {
+  @apply fixed top-0 left-0 w-full h-full bg-white md:bg-gray-800/80 z-10;
+}
+
+.modal-content {
+  @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md md:shadow-md z-20 w-[95%] md:max-w-[900px] h-full sm:h-auto pt-10 sm:pt-0 md:p-5;
+}
+
+.btn-close {
+  @apply fixed top-3 right-3 text-gray-500 md:text-white cursor-pointer z-30;
+}
