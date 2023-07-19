@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
+
 import WrapperLayiout from 'components/WrapperLayout';
 
-import 'style/main.css';
 import 'react-loading-skeleton/dist/skeleton.css';
+import 'react-toastify/dist/ReactToastify.css';
+import 'style/main.css';
 
 const roboto = Roboto({
-  weight: ['100', '400', '700'],
+  weight: ['100', '400', '500', '700'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap'
