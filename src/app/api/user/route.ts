@@ -1,13 +1,10 @@
 import { NextResponse } from 'next/server';
 
+import { conect } from 'lib/conect';
+
 export async function GET() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/conect`, {
-      method: 'GET',
-      cache: 'no-cache'
-    });
-
-    const data = await response.json();
+    const data = await conect();
 
     return NextResponse.json(data);
   } catch (error) {
