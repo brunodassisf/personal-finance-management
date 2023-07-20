@@ -4,10 +4,10 @@ import { FaUser } from 'react-icons/fa';
 import { FaTableList } from 'react-icons/fa6';
 
 import { convertCurrency, formatPhone } from 'util/format';
-import { IUser } from 'util/interface';
+import { IInfo } from 'util/interface';
 
 interface BalanceProps {
-  data: IUser;
+  data: IInfo;
 }
 
 function Balance({ data }: BalanceProps) {

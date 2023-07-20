@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   FaAngleLeft,
   FaCoins,
@@ -24,6 +24,7 @@ import {
   FaSquarePen
 } from 'react-icons/fa6';
 import Skeleton from 'react-loading-skeleton';
+import { toast } from 'react-toastify';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -31,17 +32,18 @@ import Modal from 'components/Modal';
 import Spinner from 'components/Spinner';
 import SwitchCategories from 'components/SwitchCategories';
 
-import { bgStyleType } from 'util/constant';
-import { convertCurrency } from 'util/format';
-import { handleIconMoviment, handleToast } from 'util/function';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './management.css';
 
+import { bgStyleType } from 'util/constant';
+import { convertCurrency } from 'util/format';
+import { createMovement, handleIconMoviment } from 'util/function';
+import { IInfo } from 'util/interface';
+
 import { useFormik } from 'formik';
-import useGetUser from 'hook/getUser';
+import { AppContext } from 'lib/ProviderApp';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import * as yup from 'yup';
@@ -111,48 +113,36 @@ export default function Management() {
   const [isOpenFilter, setIsOpenFilter] = useState(false);
   const [selectFilter, setSelectFilter] = useState('');
   const [loading, setLoading] = useState(false);
-  const { data, mutate } = useGetUser();
+
+  const { data, handlerUser } = useContext(AppContext);
 
   const { values, errors, touched, setFieldValue, handleChange, handleSubmit } = useFormik({
     initialValues,
     validationSchema: yup.object({
       label: yup.string().required('Campo obrigatório'),
-      description: yup.string().required('Campo obrigatório'),
       type: yup.string().required('Escolha uma categoria que melhor se encaixa'),
       value: yup
         .string()
-        .test('testValue', 'Valor inválido ou menor que o saldo atual', (value) => {
+        .test('testValue', 'Valor inválido ou maior que o saldo atual', (value) => {
           if (value) {
             const convertValue = Number(value.replace(/[^0-9]+/g, ''));
             if (convertValue <= 0) return false;
-            if (data?.user.balance && convertValue <= data.user.balance) return true;
-            return false;
+            if (data?.user.balance && convertValue > data.user.balance) return false;
+            return true;
           }
           return true;
         })
     }),
     onSubmit: async (values, formik) => {
-      setLoading(true);
-      const data = {
-        moviment: {
-          label: values.label,
-          value: values.type
-        },
-        value: values.value,
-        description: values.description
-      };
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/moviment`, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-      const { msg } = await response.json();
-      if (response.status === 200) {
+      try {
+        setLoading(true);
+        handlerUser(createMovement(values, data as IInfo));
         formik.resetForm({ values: initialValues });
-        mutate();
+        toast.success(`${values.label} adicionado as suas despesas!`);
+      } finally {
+        setLoading(false);
+        setOpen(false);
       }
-      toggleModal();
-      handleToast(response.status, msg);
-      setLoading(false);
     }
   });
 

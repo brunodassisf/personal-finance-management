@@ -1,15 +1,18 @@
+'use client';
+
 import { bgStyleType } from 'util/constant';
 import { convertCurrency } from 'util/format';
 import { handleIconMoviment } from 'util/function';
 import { IHistory } from 'util/interface';
 
 function History({ list }: { list: IHistory[] }) {
+  console.log(list);
   return (
     <article className="card flex flex-col p-5">
       <h4 className="text-lg text-emerald-800 font-bold mb-5">Extrato</h4>
       <div className="max-h-96 overflow-auto">
         {list.length > 0 ? (
-          list?.map((item, index) => (
+          list.map((item, index) => (
             <div
               key={index}
               className={`flex items-center gap-3 py-2 pl-5 border-b ${bgStyleType[item.type]}`}

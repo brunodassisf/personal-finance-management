@@ -1,6 +1,8 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -8,10 +10,11 @@ import Select from 'components/Select';
 import Spinner from 'components/Spinner';
 
 import { convertCurrency } from 'util/format';
-import { handleToast } from 'util/function';
+import { createMovement } from 'util/function';
+import { IInfo } from 'util/interface';
 
 import { useFormik } from 'formik';
-import { useSWRConfig } from 'swr';
+import { AppContext } from 'lib/ProviderApp';
 import * as yup from 'yup';
 
 const option = [
@@ -25,14 +28,20 @@ const option = [
   }
 ];
 
-const initialValues = {
+interface IInitialValues {
+  moviment: { label: string; value: string } | null;
+  value: string;
+}
+
+const initialValues: IInitialValues = {
   moviment: null,
   value: ''
 };
 
-function Movements({ balance }: { balance?: number }) {
+function Movements() {
   const [loading, setLoading] = useState(false);
-  const { mutate } = useSWRConfig();
+  const { data, handlerUser } = useContext(AppContext);
+  const router = useRouter();
 
   const validationSchema = yup.object().shape({
     moviment: yup
@@ -50,8 +59,8 @@ function Movements({ balance }: { balance?: number }) {
           if (value) {
             const convertValue = Number(value.replace(/[^0-9]+/g, ''));
             if (convertValue <= 0) return false;
-            if (context.parent.moviment.value === 'transfer') {
-              if (balance && convertValue <= balance) return true;
+            if (context.parent.moviment && context.parent.moviment.value === 'transfer') {
+              if (data?.user.balance && convertValue <= data.user.balance) return true;
               return false;
             }
             return true;
@@ -66,18 +75,22 @@ function Movements({ balance }: { balance?: number }) {
     initialValues,
     validationSchema,
     onSubmit: async (values, formik) => {
-      setLoading(true);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/moviment`, {
-        method: 'POST',
-        body: JSON.stringify(values)
-      });
-      const { msg } = await response.json();
-      if (response.status === 200) {
+      try {
+        const moviment = {
+          label: values?.moviment?.label || '',
+          description: '',
+          type: values?.moviment?.value || '',
+          value: values?.value
+        };
+
+        setLoading(true);
+        handlerUser(createMovement(moviment, data as IInfo));
         formik.resetForm({ values: initialValues });
-        mutate('/api/user');
+        toast.success(`${values?.moviment?.label || ''} adicionado as suas despesas!`);
+        router.refresh();
+      } finally {
+        setLoading(false);
       }
-      handleToast(response.status, msg);
-      setLoading(false);
     }
   });
 

@@ -10,20 +10,15 @@ import {
   FaStethoscope,
   FaUmbrellaBeach
 } from 'react-icons/fa6';
-import { toast } from 'react-toastify';
 
-export const handleToast = (status: number, msg: string) => {
-  switch (status) {
-    case 200:
-      toast.success(msg);
-      break;
-    case 600:
-      toast.error(msg);
-      break;
-    default:
-      break;
-  }
-};
+import { IInfo, TType } from './interface';
+
+interface IMoviment {
+  label: string;
+  description: string;
+  type: string;
+  value: string;
+}
 
 export const handleIconMoviment = (type: string) => {
   switch (type) {
@@ -110,4 +105,29 @@ export const handleIconMoviment = (type: string) => {
     default:
       return null;
   }
+};
+
+export const createMovement = (data: IMoviment, info: IInfo) => {
+  const movimentDate = new Date();
+  const dateLocal = movimentDate.toLocaleDateString();
+  const timeLocal = movimentDate.toLocaleTimeString();
+
+  const month = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(movimentDate);
+
+  const moviment = {
+    type: data.type as TType,
+    label: data.label,
+    value: Number(data.value.replace(/[^\d-]/g, '')),
+    description: data.description || '',
+    time: timeLocal,
+    month,
+    date: dateLocal
+  };
+
+  data.type === 'deposit'
+    ? (info.user.balance += moviment.value)
+    : (info.user.balance -= moviment.value);
+
+  info?.history.push(moviment);
+  return info;
 };

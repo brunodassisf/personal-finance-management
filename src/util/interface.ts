@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IInfo {
   user: {
     name: string;
     phone: number;
@@ -16,4 +16,17 @@ export interface IHistory {
   value: number;
 }
 
-type TType = 'deposit' | 'transfer';
+export type TType =
+  | 'deposit'
+  | 'transfer'
+  | 'vacancy'
+  | 'bill'
+  | 'reserve'
+  | 'travel'
+  | 'medical service'
+  | 'car service'
+  | 'fuel'
+  | 'mart'
+  | 'petshop'
+  | 'pharmacy'
+  | 'other';
