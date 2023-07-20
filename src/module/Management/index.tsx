@@ -40,7 +40,7 @@ import './management.css';
 import { bgStyleType } from 'util/constant';
 import { convertCurrency } from 'util/format';
 import { createMovement, handleIconMoviment } from 'util/function';
-import { IInfo } from 'util/interface';
+import { IInfo, TType } from 'util/interface';
 
 import { useFormik } from 'formik';
 import { AppContext } from 'lib/ProviderApp';
@@ -235,7 +235,9 @@ export default function Management() {
                         )?.map((h, index) => (
                           <div
                             key={index}
-                            className={`px-3 py-2 flex items-center gap-3 ${bgStyleType[h.type]}`}
+                            className={`px-3 py-2 flex items-center gap-3 ${
+                              bgStyleType[h.type as TType]
+                            }`}
                           >
                             <div>{handleIconMoviment(h.type)}</div>
                             <div>

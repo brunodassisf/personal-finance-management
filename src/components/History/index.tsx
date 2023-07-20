@@ -3,7 +3,7 @@
 import { bgStyleType } from 'util/constant';
 import { convertCurrency } from 'util/format';
 import { handleIconMoviment } from 'util/function';
-import { IHistory } from 'util/interface';
+import { IHistory, TType } from 'util/interface';
 
 function History({ list }: { list: IHistory[] }) {
   console.log(list);
@@ -15,7 +15,9 @@ function History({ list }: { list: IHistory[] }) {
           list.map((item, index) => (
             <div
               key={index}
-              className={`flex items-center gap-3 py-2 pl-5 border-b ${bgStyleType[item.type]}`}
+              className={`flex items-center gap-3 py-2 pl-5 border-b ${
+                bgStyleType[item.type as TType]
+              }`}
             >
               <div>{handleIconMoviment(item.type)}</div>
               <div>

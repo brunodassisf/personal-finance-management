@@ -10,9 +10,10 @@ export interface IInfo {
 export interface IHistory {
   date: string;
   label: string;
+  description?: string;
   time: string;
   month: string;
-  type: TType;
+  type: string | TType;
   value: number;
 }
 
